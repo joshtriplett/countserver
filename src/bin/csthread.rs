@@ -1,4 +1,5 @@
 #![feature(thread_is_running)]
+#![feature(with_backlog)]
 
 use std::io::Write;
 use std::net::*;
@@ -9,7 +10,7 @@ use std::sync::{
 
 fn main() {
     let counter = Arc::new(AtomicU64::new(0));
-    let listener = TcpListener::bind("127.0.0.1:10123").unwrap();
+    let listener = TcpListener::with_backlog("127.0.0.1:10123", 10_000).unwrap();
     let mut children = Vec::new();
     loop {
         let (mut socket, _addr) = listener.accept().unwrap();
